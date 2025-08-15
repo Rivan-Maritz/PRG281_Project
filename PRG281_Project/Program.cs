@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
+//Rivan Maritz 601530
 
+//enums for the main menu, inventory menu, cash flow manager menu, and statistics menu
 enum MainMenu
 {
     Inventory,
@@ -39,10 +41,52 @@ enum StatsMenu
     Return
 }
 
-public class Menu : Animation
+public class Data
+{
+    // Sample cash flow data
+    private int[] Cashflow = [45, 20, 35, 26, 51, 61, 23, 56, 45];
+    // Method to get the cash flow data
+    public int[] GetCashFlowData()
+    {
+        return Cashflow;
+    }
+    // Sample inventory data
+    private string[] Inventory = ["Item1", "Item2", "Item3", "Item4", "Item5"];
+    private int[] InventoryQuantities = [10, 5, 15, 3, 8];
+    private double[] InventoryPrices = [12.99, 8.49, 15.00, 5.99, 10.50];
+    private DateTime[] InventoryAddDates =
+    {
+        new DateTime(2024, 12, 31),
+        new DateTime(2025, 1, 15),
+        new DateTime(2024, 11, 30),
+        new DateTime(2025, 2, 28),
+        new DateTime(2024, 10, 20)
+    };
+    // Method to get the inventory items, quantities, prices, and add dates
+    public string[] GetInventoryItems()
+    {
+        return Inventory;
+    }
+    public int[] GetInventoryQuantities()
+    {
+        return InventoryQuantities;
+    }
+    public double[] GetInventoryPrices()
+    {
+        return InventoryPrices;
+    }
+
+    public DateTime[] GetInventoryAddDates()
+    {
+        return InventoryAddDates;
+    }
+}
+
+public class Menu:Data
 {
 
-    
+    //Menu Title Display method
+    //This method displays the title of the program in a stylized format
     public void Write()
     {
         Console.WriteLine("    ███████ ██       ██████  ██     ██ ██ ███    ██  ██████       ██████  █████  ███████ ██   ██ \r\n"+ 
@@ -51,11 +95,11 @@ public class Menu : Animation
                           " ██      ██      ██    ██ ██ ███ ██ ██ ██  ██ ██ ██    ██     ██      ██   ██      ██ ██   ██ \r\n" +
                           "██      ███████  ██████   ███ ███  ██ ██   ████  ██████       ██████ ██   ██ ███████ ██   ██ \r\n\r\n" +
 
-                          "████████████████████████████████████████████████████████████████████████████████████████████████ \r\n"+
-                           " ████████████████████████████████████████████████████████████████████████████████████████████████ \r\n"
+                           "████████████████████████████████████████████████████████████████████████████████████████████████ \r\n\r\n"+
+                           "Use the arrow keys to navigate the menu and press Enter to select an option.\r\n" 
                       );
     }
-
+    //Main menu display
     public void MainMenuDisplay()
     {
         var options = Enum.GetValues<MainMenu>();
@@ -99,19 +143,20 @@ public class Menu : Animation
         }
         while (key != ConsoleKey.Enter);
 
+        // Clear the console and switch to the selected menu
         Console.Clear();
         switch (options[selectedIndex])
         {
             case MainMenu.Inventory:
-                LoadingBar();
+                Animation.LoadingBar();
                 InventoryMenuDisplay();
                 break;
             case MainMenu.CashFlow_Manager:
-                LoadingBar();
+                Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
                 break;
             case MainMenu.Statistics:
-                LoadingBar();
+                Animation.LoadingBar();
                 StatisticsMenuDisplay();
                 break;
             case MainMenu.Exit:
@@ -119,7 +164,7 @@ public class Menu : Animation
                 break;
         }
     }
-
+    //inventory menu display
     public void InventoryMenuDisplay()
     {
         var options = Enum.GetValues<InventoryMenu>();
@@ -176,16 +221,21 @@ public class Menu : Animation
                 break;
             case InventoryMenu.Inventory_Statistics:
                 // Inventory statistics logic here
+                DisplayStats.CreateInventoryTable();
+                Console.WriteLine("Press any key to return to the Inventory menu...");
+                Console.ReadKey();
+                Animation.LoadingBar();
+                InventoryMenuDisplay();
                 break;
             case InventoryMenu.Return:
-                LoadingBar();
+                Animation.LoadingBar();
                 MainMenuDisplay();
                 break;
         }
 
     }
-
-    public void CashFlowManagerMenuDisplay()
+    //Statistics Menu Display
+    public void StatisticsMenuDisplay()
     {
         var options = Enum.GetValues<StatsMenu>();
         int selectedIndex = 0;
@@ -228,19 +278,29 @@ public class Menu : Animation
         switch (options[selectedIndex])
         {
             case StatsMenu.Cash_Chart:
-                // Add income logic here
+                // Display cash chart logic here
+                DisplayStats.DrawLineGraph(GetCashFlowData());
+                Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
+                Console.ReadKey();
+                Animation.LoadingBar();
+                StatisticsMenuDisplay();
                 break;
             case StatsMenu.Inventory_Data:
-                // Add expenses logic here
+                // Display inventory data logic here
+                DisplayStats.CreateInventoryTable();
+                Console.WriteLine("Press any key to return to the Statistics menu...");
+                Console.ReadKey();
+                Animation.LoadingBar();
+                StatisticsMenuDisplay();
                 break;
             case StatsMenu.Return:
-                LoadingBar();
+                Animation.LoadingBar();
                 MainMenuDisplay();
                 break;
         }
     }
-
-    public void StatisticsMenuDisplay()
+    //cash flow manager menu display
+    public void CashFlowManagerMenuDisplay()
     {
         var options = Enum.GetValues<CashMenu>();
         int selectedIndex = 0;
@@ -293,26 +353,87 @@ public class Menu : Animation
                 break;
             case CashMenu.Display_Cash_Charts:
                 // Display cash charts logic here
+                DisplayStats.DrawLineGraph(GetCashFlowData());
+                Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
+                Console.ReadKey();
+                Animation.LoadingBar();
+                CashFlowManagerMenuDisplay();
                 break;
             case CashMenu.Return:
-                LoadingBar();
+                Animation.LoadingBar();
                 MainMenuDisplay();
                 break;
         }
     }
 }
 
+public class  DisplayStats
+{
+    // Method to draw a line graph based on the provided data
+    public static void DrawLineGraph(int[] data)
+    {
+        int maxHeight = 10;
+        int maxData = 0;
+        foreach (int d in data)
+            if (d > maxData) maxData = d;
+
+        double scale = maxHeight / (double)maxData;
+
+        // For each row from top to bottom
+        for (int row = maxHeight; row >= 1; row--)
+        {
+            foreach (var point in data)
+            {
+                int pointHeight = (int)(point * scale);
+                if (pointHeight == row)
+                    Console.Write("* ");
+                if (pointHeight < row)
+                    Console.Write("  ");
+                if (pointHeight > row)
+                    Console.Write("| ");
+            }
+            Console.WriteLine();
+        }
+
+        // Draw X-axis line
+        for (int i = 0; i < data.Length; i++)
+            Console.Write("--");
+        Console.WriteLine();
+
+        // Draw indices or labels below x-axis
+        for (int i = 0; i < data.Length; i++)
+            Console.Write($"{i+1} ");
+        Console.WriteLine();
+    }
+    // Method to create an inventory table with items, quantities, prices, and add dates
+    public static void CreateInventoryTable()
+    {
+        Console.Clear();
+        string[] items = new Data().GetInventoryItems();
+        int[] quantities = new Data().GetInventoryQuantities();
+        double[] prices = new Data().GetInventoryPrices();
+        DateTime[] addDates = new Data().GetInventoryAddDates();
+        Console.WriteLine("Item\tQuantity\tPrice\tAdd Date");
+        Console.WriteLine("-----------------------------------------");
+        for (int i = 0; i < items.Length; i++)
+        {
+            Console.WriteLine($"{items[i]}\t{quantities[i]}\t\t{prices[i]:C}\t{addDates[i]:d}");
+        }
+        Console.WriteLine("-----------------------------------------");
+    }
+}
+
 public class Animation
 {
     //method to display text in the center of the console window
-    public void DisplayCenteredText(string text, int row)
+    public static void DisplayCenteredText(string text, int row)
     {
         int col = (Console.WindowWidth - text.Length) / 2;
         Console.SetCursorPosition(col, row);
         Console.Write(text);
     }
     //method to animate typing effect for text in the center of the console window
-    public void AnimateCenteredTyping(string text, int row, int promptLength)
+    public static void AnimateCenteredTyping(string text, int row, int promptLength)
     {
         int startCol = (Console.WindowWidth - (promptLength + 1 + text.Length)) / 2 + promptLength + 7;
         Console.SetCursorPosition(startCol, row);
@@ -324,8 +445,9 @@ public class Animation
         }
     }
 
-    public void LoadingBar()
+    public static void LoadingBar()
     {
+        Console.Clear();
         int totalWidth = 50; 
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;
@@ -348,7 +470,7 @@ public class Animation
         }
     }
 }
-public class Visual : Animation
+public class Visual
 {
     //Opening sequence display for the flowing cash program
     public void DisplayOpening()
@@ -362,16 +484,16 @@ public class Visual : Animation
         int totalLines = 2;
         int startRow = (Console.WindowHeight / 2) - (totalLines / 2);
 
-        DisplayCenteredText(usernamePrompt, startRow);
-        DisplayCenteredText(passwordPrompt, startRow + 1);
+        Animation.DisplayCenteredText(usernamePrompt, startRow);
+        Animation.DisplayCenteredText(passwordPrompt, startRow + 1);
 
-        AnimateCenteredTyping(username, startRow, usernamePrompt.Length);
+        Animation.AnimateCenteredTyping(username, startRow, usernamePrompt.Length);
 
-        AnimateCenteredTyping(password, startRow + 1, passwordPrompt.Length);
+        Animation.AnimateCenteredTyping(password, startRow + 1, passwordPrompt.Length);
 
         Console.Clear();
 
-        LoadingBar();
+        Animation.LoadingBar();
         Console.Clear();
 
         string Title = @"
@@ -409,7 +531,7 @@ ___________.__                .__                 _________               .__
 
 internal class Program
 {
-
+    // Main method to start the application
     private static void Main(string[] args)
     {
         Visual style = new Visual();
