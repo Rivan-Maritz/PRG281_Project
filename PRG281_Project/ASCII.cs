@@ -57,5 +57,21 @@ namespace PRG281_Project
             Console.ResetColor();
             Console.WriteLine("------------------------------------------------------------");
         }
+
+        public void CashStatsModuleDisplay()
+        {
+            //Displays ASCII art for the net cash module to allow the user to see what module they are in
+            //This improves user experience by providing a visual representation of the module
+            Console.WriteLine("--------------------------------------------------------------------");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(@"   _____          _        _____ _        _   _     _   _          
+  / ____|        | |      / ____| |      | | (_)   | | (_)         
+ | |     __ _ ___| |__   | (___ | |_ __ _| |_ _ ___| |_ _  ___ ___ 
+ | |    / _` / __| '_ \   \___ \| __/ _` | __| / __| __| |/ __/ __|
+ | |___| (_| \__ \ | | |  ____) | || (_| | |_| \__ \ |_| | (__\__ \
+  \_____\__,_|___/_| |_| |_____/ \__\__,_|\__|_|___/\__|_|\___|___/");
+            Console.ResetColor();
+            Console.WriteLine("--------------------------------------------------------------------");
+        }
     }
 }

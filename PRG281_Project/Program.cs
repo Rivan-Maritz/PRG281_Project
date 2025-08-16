@@ -91,7 +91,6 @@ public class Menu : Data
     private AddCash addCash = new AddCash(); // Persistent instance
     private SubtractCash subtractCash = new SubtractCash(); // Persistent instance
     private CalculateCash calculateCash = new CalculateCash(); // Persistent instance
-    private CashStatistics CashStats = new CashStatistics(); // Persistent instance
 
     //Menu Title Display method
     //This method displays the title of the program in a stylized format
@@ -353,12 +352,14 @@ public class Menu : Data
         switch (options[selectedIndex])
         {
             case CashMenu.Add_Income:
+                // Income cash logic here
                 addCash.AddIncome();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
                 break;
 
             case CashMenu.Add_Expenses:
+                // Expenses cash logic here
                 subtractCash.AddExpenses();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
@@ -375,8 +376,8 @@ public class Menu : Data
 
             case CashMenu.Display_Cash_Charts:
                 // Display cash charts logic here
-                CashStatistics cashStats = new CashStatistics();
-                cashStats.displayCashCharts();
+                CashStatistics cashStatistics = new CashStatistics();
+                cashStatistics.displayCashCharts();
                 Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();
                 Animation.LoadingBar();

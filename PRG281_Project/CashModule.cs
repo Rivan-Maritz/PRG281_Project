@@ -8,18 +8,17 @@ namespace PRG281_Project
 {
     class CashMain
     {
-        ASCII Ascii = new ASCII(); 
+        ASCII Ascii = new ASCII();
 
         private static double amount;
-        protected static double[] IncomeCashArr = new double[500]; // Array to store income cash values
-        protected static double[] ExpenseCashArr = new double[500]; // Array to store income cash values
-        protected static int incomeIndex = 0; // Index for income cash array
-        protected static int expenseIndex = 0; // Index for expense cash array
-
+        protected internal static double[] arrIncome = new double[500];
+        protected internal static int IncomeCounter = 0;
+        protected internal static double[] arrExpense = new double[500];
+        protected internal static int ExpenseCounter = 0;
 
         public static double Amount
         {
-            get                     //Encapsulation for amount variable
+            get // Encapsulation for amount variable
             {
                 return amount;
             }
@@ -28,6 +27,7 @@ namespace PRG281_Project
                 amount = value;
             }
         }
+
         public static double AmountValue
         {
             get { return amount; }
@@ -38,7 +38,6 @@ namespace PRG281_Project
     {
         public void AddIncome()
         {
-
             ASCII display = new ASCII();
             bool continueAdding = true;
 
@@ -48,7 +47,7 @@ namespace PRG281_Project
             {
                 double income;
 
-                Console.WriteLine("Please enter the amount of cash to add :");
+                Console.WriteLine("Please enter the amount of cash to add:");
                 if (!double.TryParse(Console.ReadLine(), out income) || income < 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -58,19 +57,20 @@ namespace PRG281_Project
                 }
 
                 Amount += income;
-                IncomeCashArr[incomeIndex] = income;
-                incomeIndex++;
+                arrIncome[IncomeCounter] = income;
+                IncomeCounter++;
 
                 Console.Write("Income added: ");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.Write($"{income:C}");
                 Console.ResetColor();
                 Console.Write(". Total amount: ");
+
                 if (Amount < 0)
                     Console.ForegroundColor = ConsoleColor.Red;
                 else if (Amount > 0)
                     Console.ForegroundColor = ConsoleColor.Green;
-                else if (Amount == 0)
+                else
                     Console.ForegroundColor = ConsoleColor.Yellow;
 
                 Console.WriteLine($"{Amount:C}");
@@ -82,7 +82,6 @@ namespace PRG281_Project
                 Console.ResetColor();
 
                 string input = Console.ReadLine().Trim().ToUpper();
-
                 continueAdding = (input == "Y");
             }
         }
@@ -92,33 +91,32 @@ namespace PRG281_Project
     {
         public void AddExpenses()
         {
-            ASCII display = new ASCII();                                                                            //Instantiate the ASCII class to display the module art
-
+            ASCII display = new ASCII(); // Instantiate the ASCII class to display the module art
             bool continueAdding = true;
-            const double VAT = 0.15;                                                                                //Constant VAT rate of 15% 
+            const double VAT = 0.15; // Constant VAT rate of 15%
 
-            display.ExpenseModuleDisplay();                                                                         //We call the ExpenseModuleDisplay method to display the ASCII art for the expense module
+            display.ExpenseModuleDisplay(); // Display ASCII art for the expense module
 
-            while (continueAdding)                                                                                  //We use loops to control the amount of expense inputs we would like to add
+            while (continueAdding)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("                   Is this purchase VAT-inclusive? [Y/N]                   ");
                 Console.ResetColor();
                 Console.WriteLine("---------------------------------------------------------------------------");
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("            Y - will automaticly add VAT to the amount entered             ");
+                Console.WriteLine("            Y - will automatically add VAT to the amount entered           ");
                 Console.WriteLine("            N - will ensure the purchase was not VAT-inclusive             ");
                 Console.ResetColor();
                 Console.WriteLine("---------------------------------------------------------------------------");
 
-                string inputVAT = Console.ReadLine().Trim().ToUpper();                                              //Receives user input for VAT inclusion
+                string inputVAT = Console.ReadLine().Trim().ToUpper();
                 Console.WriteLine("");
 
                 double finalExpense;
                 double expenses;
 
                 Console.WriteLine("Please enter the amount of cash expenses:");
-                if (!double.TryParse(Console.ReadLine(), out expenses) || expenses < 0)                             //ensures that the user inputs a valid amount for expenses
+                if (!double.TryParse(Console.ReadLine(), out expenses) || expenses < 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid amount. Please enter a positive number.");
@@ -126,13 +124,13 @@ namespace PRG281_Project
                     continue;
                 }
 
-                if (inputVAT == "Y")                                                                                //checks if the user input for VAT is Y or N
+                if (inputVAT == "Y")
                 {
-                    finalExpense = expenses * (1 + VAT);                                                            //adds VAT to the entered amount
+                    finalExpense = expenses * (1 + VAT);
                 }
                 else if (inputVAT == "N")
                 {
-                    finalExpense = expenses;                                                                        //ignores VAT if the user input is N
+                    finalExpense = expenses;
                 }
                 else
                 {
@@ -143,8 +141,8 @@ namespace PRG281_Project
                 }
 
                 Amount -= finalExpense;
-                ExpenseCashArr[expenseIndex] = finalExpense;
-                expenseIndex++;
+                arrExpense[ExpenseCounter] = finalExpense;
+                ExpenseCounter++;
 
                 Console.Write("Expenses added: ");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -156,7 +154,7 @@ namespace PRG281_Project
                     Console.ForegroundColor = ConsoleColor.Red;
                 else if (Amount > 0)
                     Console.ForegroundColor = ConsoleColor.Green;
-                else if (Amount == 0)
+                else
                     Console.ForegroundColor = ConsoleColor.Yellow;
 
                 Console.WriteLine($"{Amount:C}");
@@ -168,7 +166,6 @@ namespace PRG281_Project
                 Console.ResetColor();
 
                 string input = Console.ReadLine().Trim().ToUpper();
-
                 continueAdding = (input == "Y");
             }
         }
@@ -178,19 +175,19 @@ namespace PRG281_Project
     {
         public void CalculateTotalCash()
         {
-            ASCII display = new ASCII();                              //Instantiate the ASCII class to display the module art
-            display.CashModuleDisplay();                              //We call the CashModuleDisplay method to display the ASCII art for the net cash module
+            ASCII display = new ASCII(); // Instantiate the ASCII class to display the module art
+            display.CashModuleDisplay(); // Display ASCII art for the net cash module
 
             Console.Write("The current amount of net cash is: ");
 
-            if (Amount < 0)                                           //We use if statements to determine the color of the text based on the amount
-                Console.ForegroundColor = ConsoleColor.Red;           //This is for user experience, to easily identify if the amount is negative, positive, or zero
+            if (Amount < 0)
+                Console.ForegroundColor = ConsoleColor.Red;
             else if (Amount > 0)
                 Console.ForegroundColor = ConsoleColor.Green;
-            else if (Amount == 0)
+            else
                 Console.ForegroundColor = ConsoleColor.Yellow;
 
-            Console.WriteLine($"{Amount:C}");                         //The {amount:C} format specifier is used to display the amount as a currency value
+            Console.WriteLine($"{Amount:C}");
             Console.ResetColor();
         }
     }
@@ -199,7 +196,10 @@ namespace PRG281_Project
     {
         public void displayCashCharts()
         {
-
+            ASCII display = new ASCII();
+            display.CashStatsModuleDisplay();
+            Console.WriteLine("Test");
         }
+
     }
 }
