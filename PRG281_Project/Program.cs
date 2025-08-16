@@ -286,7 +286,9 @@ public class Menu : Data
         {
             case StatsMenu.Cash_Chart:
                 // Display cash chart logic here
-                DisplayStats.DrawLineGraph(GetCashFlowData());
+                CashStatistics cashStatistics = new CashStatistics();
+                Animation.LoadingBar();
+                cashStatistics.displayCashCharts();
                 Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();
                 Animation.LoadingBar();
@@ -353,6 +355,7 @@ public class Menu : Data
         {
             case CashMenu.Add_Income:
                 // Income cash logic here
+                Animation.LoadingBar();
                 addCash.AddIncome();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
@@ -360,6 +363,7 @@ public class Menu : Data
 
             case CashMenu.Add_Expenses:
                 // Expenses cash logic here
+                Animation.LoadingBar();
                 subtractCash.AddExpenses();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
@@ -367,6 +371,7 @@ public class Menu : Data
 
             case CashMenu.Calculate_Cash:
                 // Calculate cash logic here
+                Animation.LoadingBar();
                 calculateCash.CalculateTotalCash();
                 Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();
@@ -377,6 +382,7 @@ public class Menu : Data
             case CashMenu.Display_Cash_Charts:
                 // Display cash charts logic here
                 CashStatistics cashStatistics = new CashStatistics();
+                Animation.LoadingBar();
                 cashStatistics.displayCashCharts();
                 Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();

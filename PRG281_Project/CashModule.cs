@@ -196,9 +196,62 @@ namespace PRG281_Project
     {
         public void displayCashCharts()
         {
+            Console.Clear();
             ASCII display = new ASCII();
             display.CashStatsModuleDisplay();
-            Console.WriteLine("Test");
+
+            bool hasIncome = IncomeCounter > 0;
+            bool hasExpense = ExpenseCounter > 0;
+
+            if (!hasIncome && !hasExpense)
+            {
+                Console.WriteLine("No data available to display charts.");
+                return;
+            }
+
+            int maxEntries = Math.Max(IncomeCounter, ExpenseCounter);
+            double maxIncome = hasIncome ? arrIncome.Take(IncomeCounter).Max() : 0;
+            double maxExpense = hasExpense ? arrExpense.Take(ExpenseCounter).Max() : 0;
+            double maxValue = Math.Max(maxIncome, maxExpense);
+
+            if (hasIncome)
+            {
+                Console.WriteLine("Income Chart:");
+                for (int i = 0; i < IncomeCounter; i++)
+                {
+                    DrawBar(arrIncome[i], maxValue, ConsoleColor.Green, i);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No income data available.");
+            }
+
+            if (hasExpense)
+            {
+                Console.WriteLine("Expense Chart:");
+                for (int i = 0; i < ExpenseCounter; i++)
+                {
+                    DrawBar(arrExpense[i], maxValue, ConsoleColor.Red, i);
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n No expense data available.");
+            }
+        }
+
+
+        private static void DrawBar(double value, double maxValue, ConsoleColor color, int index)
+        {
+            int barWidth = 50;
+            int scaledLength = (int)((value / maxValue) * barWidth); //convert to int
+
+            Console.ForegroundColor = color;
+            Console.Write(new string('█', scaledLength));            //convert to string
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine($" {value:C}");                        //displays value next to bar
         }
 
     }
