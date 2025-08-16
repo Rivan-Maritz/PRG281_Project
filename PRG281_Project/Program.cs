@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 //Rivan Maritz 601530
+//Theart Jooste 601288
 
 //enums for the main menu, inventory menu, cash flow manager menu, and statistics menu
 enum MainMenu
@@ -82,8 +83,9 @@ public class Data
     }
 }
 
-public class Menu:Data
+public class Menu : Data
 {
+    private AddCash addCash = new AddCash(); // Persistent instance
 
     //Menu Title Display method
     //This method displays the title of the program in a stylized format
@@ -302,6 +304,7 @@ public class Menu:Data
     //cash flow manager menu display
     public void CashFlowManagerMenuDisplay()
     {
+        CashMain cashmain = new CashMain();
         var options = Enum.GetValues<CashMenu>();
         int selectedIndex = 0;
         ConsoleKey key;
@@ -340,10 +343,13 @@ public class Menu:Data
         }
         while (key != ConsoleKey.Enter);
         Console.Clear();
+
+        bool mainMenu = true;
         switch (options[selectedIndex])
         {
             case CashMenu.Add_Income:
-                // Add income logic here
+                addCash.AddIncome();
+                mainMenu = false;
                 break;
             case CashMenu.Add_Expenses:
                 // Add expenses logic here
@@ -364,6 +370,29 @@ public class Menu:Data
                 MainMenuDisplay();
                 break;
         }
+
+        do
+        {
+            Console.WriteLine("Would you like to add more cash? [Y/N]");
+            string cashOption = Console.ReadLine().ToUpper();
+            if (cashOption == "Y")
+                {
+                    addCash.AddIncome();
+                    mainMenu = false;
+                }
+                else if (cashOption == "N")
+                {
+                    Animation.LoadingBar();
+                    MainMenuDisplay();
+                    mainMenu = true;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error : Please enter a valid answer");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+        } while (mainMenu == false);
     }
 }
 
@@ -528,6 +557,46 @@ ___________.__                .__                 _________               .__
         Thread.Sleep(1500); // Pause before clearing the console
     }
 }
+
+    class CashMain
+    {
+        private double amount;
+
+        public double Amount 
+            {
+                get { return amount; }  //Encapsulation for amount variable
+                set { amount = value; }
+            }
+    }
+
+    class AddCash : CashMain
+    {
+        public void AddIncome()
+        {
+            Console.WriteLine("Please place the amount of cash that needs to be added: ");
+            double income = double.Parse(Console.ReadLine());
+            Amount += income; // Adding income to the amount
+            Console.WriteLine($"Income added: {income:C}. Total amount: {Amount:C}");
+        }
+
+        
+    }
+    class SubtractCash : CashMain
+    {
+        public void AddExpenses(double expenses)
+        {
+            Amount -= expenses; // Subtracting expenses from the amount
+            Console.WriteLine($"Expenses added: {expenses:C}. Total amount: {Amount:C}");
+        }
+    }
+
+    class CalculateCash : CashMain
+    {
+        public double CalculateTotalCash()
+        {
+            return Amount; // Returning the total net cash amount
+        }
+    }
 
 internal class Program
 {
