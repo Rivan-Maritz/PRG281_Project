@@ -573,10 +573,11 @@ class AddCash : CashMain
     public void AddIncome()
     {
         bool continueAdding = true;
+
         while (continueAdding)
         {
-            Console.WriteLine("Please enter the amount of cash to add:");
             double income;
+            Console.WriteLine("Please enter the amount of cash to add :");
             if (!double.TryParse(Console.ReadLine(), out income) || income < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -584,6 +585,7 @@ class AddCash : CashMain
                 Console.ResetColor();
                 continue;
             }
+
             Amount += income;
             Console.Write("Income added: ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -613,10 +615,21 @@ class SubtractCash : CashMain
     public void AddExpenses()
     {
         bool continueAdding = true;
+        const double VAT = 0.15; // VAT rate of 15%
+
         while (continueAdding)
         {
-            Console.WriteLine("Please enter the amount of cash expenses:");
+            Console.WriteLine("Is this purchase VAT-inclusive? [Y/N]");
+            Console.WriteLine("---------------------------------------------------");
+            Console.WriteLine("Y - will automaticly add VAT to the amount entered");
+            Console.WriteLine("N - will ensure the purchase was not VAT-inclusive");
+            Console.WriteLine("---------------------------------------------------");
+            string inputVAT = Console.ReadLine().Trim().ToUpper();
+
+            double finalExpense;
             double expenses;
+
+            Console.WriteLine("Please enter the amount of cash expenses:");
             if (!double.TryParse(Console.ReadLine(), out expenses) || expenses < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -624,10 +637,29 @@ class SubtractCash : CashMain
                 Console.ResetColor();
                 continue;
             }
-            Amount -= expenses;
+
+            if (inputVAT == "Y")
+            {
+                // Amount already includes VAT
+                finalExpense = expenses * (1 + VAT);
+            }
+            else if (inputVAT == "N")
+            {
+                // Add VAT to the entered amount
+                finalExpense = expenses;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid VAT option. Please enter Y or N.");
+                Console.ResetColor();
+                continue;
+            }
+
+            Amount -= finalExpense;
             Console.Write("Expenses added: ");
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write($"-{expenses:C}");
+            Console.Write($"-{finalExpense:C}");
             Console.ResetColor();
             Console.Write(". Total amount: ");
             if (Amount < 0)
@@ -653,7 +685,15 @@ class SubtractCash : CashMain
     {
         public void CalculateTotalCash()
         {
-        Console.WriteLine("The current amount of net cash is: R" + Amount);
+            Console.Write("The current amount of net cash is: ");
+            if (Amount < 0)
+                Console.ForegroundColor = ConsoleColor.Red;
+            else if (Amount > 0)
+                Console.ForegroundColor = ConsoleColor.Green;
+            else if (Amount == 0)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{Amount:C}");
+            Console.ResetColor();
         }
     }
 
