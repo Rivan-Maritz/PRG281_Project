@@ -86,6 +86,8 @@ public class Data
 public class Menu : Data
 {
     private AddCash addCash = new AddCash(); // Persistent instance
+    private SubtractCash subtractCash = new SubtractCash(); // Persistent instance
+    private CalculateCash calculateCash = new CalculateCash(); // Persistent instance
 
     //Menu Title Display method
     //This method displays the title of the program in a stylized format
@@ -344,18 +346,25 @@ public class Menu : Data
         while (key != ConsoleKey.Enter);
         Console.Clear();
 
-        bool mainMenu = true;
         switch (options[selectedIndex])
         {
             case CashMenu.Add_Income:
                 addCash.AddIncome();
-                mainMenu = false;
+                Animation.LoadingBar();
+                CashFlowManagerMenuDisplay();
                 break;
             case CashMenu.Add_Expenses:
-                // Add expenses logic here
+                subtractCash.AddExpenses();
+                Animation.LoadingBar();
+                CashFlowManagerMenuDisplay();
                 break;
             case CashMenu.Calculate_Cash:
                 // Calculate cash logic here
+                calculateCash.CalculateTotalCash();
+                Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
+                Console.ReadKey();
+                Animation.LoadingBar();
+                CashFlowManagerMenuDisplay();
                 break;
             case CashMenu.Display_Cash_Charts:
                 // Display cash charts logic here
@@ -370,29 +379,6 @@ public class Menu : Data
                 MainMenuDisplay();
                 break;
         }
-
-        do
-        {
-            Console.WriteLine("Would you like to add more cash? [Y/N]");
-            string cashOption = Console.ReadLine().ToUpper();
-            if (cashOption == "Y")
-                {
-                    addCash.AddIncome();
-                    mainMenu = false;
-                }
-                else if (cashOption == "N")
-                {
-                    Animation.LoadingBar();
-                    MainMenuDisplay();
-                    mainMenu = true;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error : Please enter a valid answer");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-        } while (mainMenu == false);
     }
 }
 
@@ -493,7 +479,13 @@ public class Animation
             int leftPosition = (windowWidth - (totalWidth + 5)) / 2;
 
             Console.SetCursorPosition(leftPosition, topPosition);
-            Console.Write($"[{bar}] {percent,3}%");
+
+            Console.Write("[");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{bar}");
+            Console.ResetColor();
+            Console.Write($"] ");
+            Console.Write($"{percent,3}%");
 
             Thread.Sleep(10);
         }
@@ -560,7 +552,7 @@ ___________.__                .__                 _________               .__
 
     class CashMain
     {
-        private double amount;
+        private static double amount;
 
         public double Amount 
             {
@@ -571,31 +563,63 @@ ___________.__                .__                 _________               .__
 
     class AddCash : CashMain
     {
-        public void AddIncome()
+    public void AddIncome()
+    {
+        bool continueAdding = true;
+        while (continueAdding)
         {
-            Console.WriteLine("Please place the amount of cash that needs to be added: ");
-            double income = double.Parse(Console.ReadLine());
-            Amount += income; // Adding income to the amount
+            Console.WriteLine("Please enter the amount of cash to add:");
+            double income;
+            if (!double.TryParse(Console.ReadLine(), out income) || income < 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid amount. Please enter a positive number.");
+                Console.ResetColor();
+                continue;
+            }
+            Amount += income;
             Console.WriteLine($"Income added: {income:C}. Total amount: {Amount:C}");
+
+            Console.WriteLine("Would you like to add more cash? [Y/N]");
+            string input = Console.ReadLine().Trim().ToUpper();
+            continueAdding = (input == "Y");
         }
+    }
 
         
     }
-    class SubtractCash : CashMain
+class SubtractCash : CashMain
+{
+    public void AddExpenses()
     {
-        public void AddExpenses(double expenses)
+        bool continueAdding = true;
+        while (continueAdding)
         {
-            Amount -= expenses; // Subtracting expenses from the amount
+            Console.WriteLine("Please enter the amount of cash expenses:");
+            double expenses;
+            if (!double.TryParse(Console.ReadLine(), out expenses) || expenses < 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid amount. Please enter a positive number.");
+                Console.ResetColor();
+                continue;
+            }
+            Amount -= expenses; // Subtracting expenses from the amount 
             Console.WriteLine($"Expenses added: {expenses:C}. Total amount: {Amount:C}");
+
+            Console.WriteLine("Would you like to add more expenses? [Y/N]");
+            string input = Console.ReadLine().Trim().ToUpper();
+            continueAdding = (input == "Y");
         }
     }
+}
 
     class CalculateCash : CashMain
     {
-        public double CalculateTotalCash()
+        public void CalculateTotalCash()
         {
-            return Amount; // Returning the total net cash amount
-        }
+        Console.WriteLine("The current amount of net cash is: R" + Amount);
+    }
     }
 
 internal class Program
