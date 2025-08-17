@@ -572,11 +572,15 @@ class AddCash : CashMain
 {
     public void AddIncome()
     {
+        ASCII display = new ASCII();
         bool continueAdding = true;
+
+        display.IncomeModuleDisplay();
 
         while (continueAdding)
         {
             double income;
+
             Console.WriteLine("Please enter the amount of cash to add :");
             if (!double.TryParse(Console.ReadLine(), out income) || income < 0)
             {
@@ -587,6 +591,7 @@ class AddCash : CashMain
             }
 
             Amount += income;
+
             Console.Write("Income added: ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.Write($"{income:C}");
@@ -598,6 +603,7 @@ class AddCash : CashMain
                 Console.ForegroundColor = ConsoleColor.Green;
             else if (Amount == 0)
                 Console.ForegroundColor = ConsoleColor.Yellow;
+
             Console.WriteLine($"{Amount:C}");
             Console.ResetColor();
 
@@ -605,32 +611,45 @@ class AddCash : CashMain
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("[Y/N]");
             Console.ResetColor();
+
             string input = Console.ReadLine().Trim().ToUpper();
+
             continueAdding = (input == "Y");
         }
     }
 }
+
 class SubtractCash : CashMain
 {
     public void AddExpenses()
     {
-        bool continueAdding = true;
-        const double VAT = 0.15; // VAT rate of 15%
+        ASCII display = new ASCII();                                                                            //Instantiate the ASCII class to display the module art
 
-        while (continueAdding)
+        bool continueAdding = true;
+        const double VAT = 0.15;                                                                                //Constant VAT rate of 15% 
+
+        display.ExpenseModuleDisplay();                                                                         //We call the ExpenseModuleDisplay method to display the ASCII art for the expense module
+
+        while (continueAdding)                                                                                  //We use loops to control the amount of expense inputs we would like to add
         {
-            Console.WriteLine("Is this purchase VAT-inclusive? [Y/N]");
-            Console.WriteLine("---------------------------------------------------");
-            Console.WriteLine("Y - will automaticly add VAT to the amount entered");
-            Console.WriteLine("N - will ensure the purchase was not VAT-inclusive");
-            Console.WriteLine("---------------------------------------------------");
-            string inputVAT = Console.ReadLine().Trim().ToUpper();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("                   Is this purchase VAT-inclusive? [Y/N]                   ");
+            Console.ResetColor();
+            Console.WriteLine("---------------------------------------------------------------------------");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("            Y - will automaticly add VAT to the amount entered             ");
+            Console.WriteLine("            N - will ensure the purchase was not VAT-inclusive             ");
+            Console.ResetColor();
+            Console.WriteLine("---------------------------------------------------------------------------");
+
+            string inputVAT = Console.ReadLine().Trim().ToUpper();                                              //Receives user input for VAT inclusion
+            Console.WriteLine("");
 
             double finalExpense;
             double expenses;
 
             Console.WriteLine("Please enter the amount of cash expenses:");
-            if (!double.TryParse(Console.ReadLine(), out expenses) || expenses < 0)
+            if (!double.TryParse(Console.ReadLine(), out expenses) || expenses < 0)                             //ensures that the user inputs a valid amount for expenses
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Invalid amount. Please enter a positive number.");
@@ -638,15 +657,13 @@ class SubtractCash : CashMain
                 continue;
             }
 
-            if (inputVAT == "Y")
-            {
-                // Amount already includes VAT
-                finalExpense = expenses * (1 + VAT);
+            if (inputVAT == "Y")                                                                                //checks if the user input for VAT is Y or N
+            {            
+                finalExpense = expenses * (1 + VAT);                                                            //adds VAT to the entered amount
             }
             else if (inputVAT == "N")
             {
-                // Add VAT to the entered amount
-                finalExpense = expenses;
+                finalExpense = expenses;                                                                        //ignores VAT if the user input is N
             }
             else
             {
@@ -657,17 +674,20 @@ class SubtractCash : CashMain
             }
 
             Amount -= finalExpense;
+
             Console.Write("Expenses added: ");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Write($"-{finalExpense:C}");
             Console.ResetColor();
             Console.Write(". Total amount: ");
+
             if (Amount < 0)
                 Console.ForegroundColor = ConsoleColor.Red;
             else if (Amount > 0)
                 Console.ForegroundColor = ConsoleColor.Green;
             else if (Amount == 0)
                 Console.ForegroundColor = ConsoleColor.Yellow;
+
             Console.WriteLine($"{Amount:C}");
             Console.ResetColor();
 
@@ -675,27 +695,87 @@ class SubtractCash : CashMain
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("[Y/N]");
             Console.ResetColor();
+
             string input = Console.ReadLine().Trim().ToUpper();
+
             continueAdding = (input == "Y");
         }
     }
 }
 
-    class CalculateCash : CashMain
+class CalculateCash : CashMain
+{
+    public void CalculateTotalCash()
     {
-        public void CalculateTotalCash()
-        {
-            Console.Write("The current amount of net cash is: ");
-            if (Amount < 0)
-                Console.ForegroundColor = ConsoleColor.Red;
-            else if (Amount > 0)
-                Console.ForegroundColor = ConsoleColor.Green;
-            else if (Amount == 0)
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"{Amount:C}");
-            Console.ResetColor();
-        }
+        ASCII display = new ASCII();                              //Instantiate the ASCII class to display the module art
+        display.CashModuleDisplay();                              //We call the CashModuleDisplay method to display the ASCII art for the net cash module
+
+        Console.Write("The current amount of net cash is: ");
+
+        if (Amount < 0)                                           //We use if statements to determine the color of the text based on the amount
+            Console.ForegroundColor = ConsoleColor.Red;           //This is for user experience, to easily identify if the amount is negative, positive, or zero
+        else if (Amount > 0)
+            Console.ForegroundColor = ConsoleColor.Green;
+        else if (Amount == 0)
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+        Console.WriteLine($"{Amount:C}");                         //The {amount:C} format specifier is used to display the amount as a currency value
+        Console.ResetColor();
     }
+}
+
+class ASCII
+{
+    public void IncomeModuleDisplay()
+    {
+        //Displays ASCII art for the income module to allow the user to see what module they are in
+        //This improves user experience by providing a visual representation of the module
+        Console.WriteLine("-------------------------------------------------------------------------");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(@"  _____                                  __  __           _       _      
+ |_   _|                                |  \/  |         | |     | |     
+   | |  _ __   ___ ___  _ __ ___   ___  | \  / | ___   __| |_   _| | ___ 
+   | | | '_ \ / __/ _ \| '_ ` _ \ / _ \ | |\/| |/ _ \ / _` | | | | |/ _ \
+  _| |_| | | | (_| (_) | | | | | |  __/ | |  | | (_) | (_| | |_| | |  __/
+ |_____|_| |_|\___\___/|_| |_| |_|\___| |_|  |_|\___/ \__,_|\__,_|_|\___|");
+        Console.ResetColor();
+        Console.WriteLine("-------------------------------------------------------------------------");
+    }
+
+    public void ExpenseModuleDisplay()
+    {
+        //Displays ASCII art for the expense module to allow the user to see what module they are in
+        //This improves user experience by providing a visual representation of the module
+        Console.WriteLine("---------------------------------------------------------------------------");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(@"  ______                                  __  __           _       _      
+ |  ____|                                |  \/  |         | |     | |     
+ | |__  __  ___ __   ___ _ __  ___  ___  | \  / | ___   __| |_   _| | ___ 
+ |  __| \ \/ / '_ \ / _ \ '_ \/ __|/ _ \ | |\/| |/ _ \ / _` | | | | |/ _ \
+ | |____ >  <| |_) |  __/ | | \__ \  __/ | |  | | (_) | (_| | |_| | |  __/
+ |______/_/\_\ .__/ \___|_| |_|___/\___| |_|  |_|\___/ \__,_|\__,_|_|\___|
+             | |                                                          
+             |_|                                                          ");
+        Console.ResetColor();
+        Console.WriteLine("---------------------------------------------------------------------------");
+    }
+
+    public void CashModuleDisplay()
+    {
+        //Displays ASCII art for the net cash module to allow the user to see what module they are in
+        //This improves user experience by providing a visual representation of the module
+        Console.WriteLine("------------------------------------------------------------");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(@"   _____          _       __  __           _       _      
+  / ____|        | |     |  \/  |         | |     | |     
+ | |     __ _ ___| |__   | \  / | ___   __| |_   _| | ___ 
+ | |    / _` / __| '_ \  | |\/| |/ _ \ / _` | | | | |/ _ \
+ | |___| (_| \__ \ | | | | |  | | (_) | (_| | |_| | |  __/
+  \_____\__,_|___/_| |_| |_|  |_|\___/ \__,_|\__,_|_|\___|");
+        Console.ResetColor();
+        Console.WriteLine("------------------------------------------------------------");
+    }
+}
 
 internal class Program
 {
