@@ -3,6 +3,7 @@ using System.Buffers.Text;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 //Rivan Maritz 601530
 //Theart Jooste 601288
@@ -556,13 +557,19 @@ ___________.__                .__                 _________               .__
 
         public double Amount 
             {
-                get { return amount; }  //Encapsulation for amount variable
-                set { amount = value; }
+                get                     //Encapsulation for amount variable
+                { 
+                    return amount; 
+                }  
+                set     
+                { 
+                    amount = value; 
+                }
             }
     }
 
-    class AddCash : CashMain
-    {
+class AddCash : CashMain
+{
     public void AddIncome()
     {
         bool continueAdding = true;
@@ -578,16 +585,29 @@ ___________.__                .__                 _________               .__
                 continue;
             }
             Amount += income;
-            Console.WriteLine($"Income added: {income:C}. Total amount: {Amount:C}");
+            Console.Write("Income added: ");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write($"{income:C}");
+            Console.ResetColor();
+            Console.Write(". Total amount: ");
+            if (Amount < 0)
+                Console.ForegroundColor = ConsoleColor.Red;
+            else if (Amount > 0)
+                Console.ForegroundColor = ConsoleColor.Green;
+            else if (Amount == 0)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{Amount:C}");
+            Console.ResetColor();
 
-            Console.WriteLine("Would you like to add more cash? [Y/N]");
+            Console.Write("Would you like to add more cash? ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("[Y/N]");
+            Console.ResetColor();
             string input = Console.ReadLine().Trim().ToUpper();
             continueAdding = (input == "Y");
         }
     }
-
-        
-    }
+}
 class SubtractCash : CashMain
 {
     public void AddExpenses()
@@ -604,10 +624,25 @@ class SubtractCash : CashMain
                 Console.ResetColor();
                 continue;
             }
-            Amount -= expenses; // Subtracting expenses from the amount 
-            Console.WriteLine($"Expenses added: {expenses:C}. Total amount: {Amount:C}");
+            Amount -= expenses;
+            Console.Write("Expenses added: ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write($"-{expenses:C}");
+            Console.ResetColor();
+            Console.Write(". Total amount: ");
+            if (Amount < 0)
+                Console.ForegroundColor = ConsoleColor.Red;
+            else if (Amount > 0)
+                Console.ForegroundColor = ConsoleColor.Green;
+            else if (Amount == 0)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{Amount:C}");
+            Console.ResetColor();
 
-            Console.WriteLine("Would you like to add more expenses? [Y/N]");
+            Console.Write("Would you like to add more expenses? ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("[Y/N]");
+            Console.ResetColor();
             string input = Console.ReadLine().Trim().ToUpper();
             continueAdding = (input == "Y");
         }
@@ -619,7 +654,7 @@ class SubtractCash : CashMain
         public void CalculateTotalCash()
         {
         Console.WriteLine("The current amount of net cash is: R" + Amount);
-    }
+        }
     }
 
 internal class Program
