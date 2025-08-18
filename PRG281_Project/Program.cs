@@ -89,6 +89,7 @@ public class Menu : Data
     private AddCash addCash = new AddCash(); // Persistent instance
     private SubtractCash subtractCash = new SubtractCash(); // Persistent instance
     private CalculateCash calculateCash = new CalculateCash(); // Persistent instance
+    private CashStatistics CashStats = new CashStatistics(); // Persistent instance
 
     //Menu Title Display method
     //This method displays the title of the program in a stylized format
@@ -354,11 +355,13 @@ public class Menu : Data
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
                 break;
+
             case CashMenu.Add_Expenses:
                 subtractCash.AddExpenses();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
                 break;
+
             case CashMenu.Calculate_Cash:
                 // Calculate cash logic here
                 calculateCash.CalculateTotalCash();
@@ -367,14 +370,17 @@ public class Menu : Data
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
                 break;
+
             case CashMenu.Display_Cash_Charts:
                 // Display cash charts logic here
-                DisplayStats.DrawLineGraph(GetCashFlowData());
+                CashStatistics cashStats = new CashStatistics();
+                cashStats.displayCashCharts();
                 Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
                 break;
+
             case CashMenu.Return:
                 Animation.LoadingBar();
                 MainMenuDisplay();
@@ -554,8 +560,13 @@ ___________.__                .__                 _________               .__
     class CashMain
     {
         private static double amount;
+        protected static double[] IncomeCashArr = new double[500]; // Array to store income cash values
+        protected static double[] ExpenseCashArr = new double[500]; // Array to store income cash values
+        protected static int incomeIndex = 0; // Index for income cash array
+        protected static int expenseIndex = 0; // Index for expense cash array
 
-        public double Amount 
+
+    public static double Amount 
             {
                 get                     //Encapsulation for amount variable
                 { 
@@ -566,12 +577,17 @@ ___________.__                .__                 _________               .__
                     amount = value; 
                 }
             }
+    public static double AmountValue
+    {
+        get { return amount; }
     }
+}
 
 class AddCash : CashMain
 {
     public void AddIncome()
     {
+
         ASCII display = new ASCII();
         bool continueAdding = true;
 
@@ -591,6 +607,8 @@ class AddCash : CashMain
             }
 
             Amount += income;
+            IncomeCashArr[incomeIndex] = income;
+            incomeIndex++;
 
             Console.Write("Income added: ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -674,6 +692,8 @@ class SubtractCash : CashMain
             }
 
             Amount -= finalExpense;
+            ExpenseCashArr[expenseIndex] = finalExpense;
+            expenseIndex++;
 
             Console.Write("Expenses added: ");
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -723,6 +743,16 @@ class CalculateCash : CashMain
         Console.ResetColor();
     }
 }
+
+class CashStatistics : CashMain
+{
+    public void displayCashCharts()
+    {
+        
+    }
+}
+
+
 
 class ASCII
 {
