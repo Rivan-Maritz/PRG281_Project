@@ -30,11 +30,18 @@ namespace PRG281_Project
 
             Console.Clear();
 
-            Animation.LoadingBar();
+            Thread loadingThread = new Thread(Animation.LoadingBar);                //CUSTOM THREADING
+            loadingThread.Start();      // Starting the thread loadingThread
+            loadingThread.Join();       // Wait for the loading bar to finish
+
             Console.Clear();
 
-            ASCII ascii = new ASCII();
-            ascii.CashFlowDisplay();
+            ASCII ascii = new ASCII();                                                  
+            Thread displaythread = new Thread(ascii.CashFlowDisplay);               //CUSTOM THREADING
+            displaythread.Start();      // Starting the thread displaythread
+            displaythread.Join();       // Wait for the display thread to finish
+
+
         }
     }
 }

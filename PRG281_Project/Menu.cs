@@ -13,8 +13,13 @@ namespace PRG281_Project
         private SubtractCash subtractCash = new SubtractCash(); // Persistent instance
         private CalculateCash calculateCash = new CalculateCash(); // Persistent instance
         private ASCII ascii = new ASCII();
-        //Menu Title Display method
-        //This method displays the title of the program in a stylized format
+
+        public static void RunLoadingBar()
+        {
+            Thread loadingThread = new Thread(() => Animation.LoadingBar());  //CUSTOM THREADING
+            loadingThread.Start();                                            //STARTS CUSTOM THREADING
+            loadingThread.Join();                                             //WAITS FOR THE LOADING BAR TO FINISH
+        }
 
         //Main menu display
         public void MainMenuDisplay()
@@ -66,18 +71,19 @@ namespace PRG281_Project
             switch (options[selectedIndex])
             {
                 case MainMenu.Inventory:
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     InventoryMenuDisplay();
                     break;
                 case MainMenu.CashFlow_Manager:
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     CashFlowManagerMenuDisplay();
                     break;
                 case MainMenu.Statistics:
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     StatisticsMenuDisplay();
                     break;
                 case MainMenu.Exit:
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     Environment.Exit(0);
                     break;
             }
@@ -128,34 +134,38 @@ namespace PRG281_Project
             {
                 case InventoryMenu.Add_Item:
                     // Add item logic here
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     inventoryManager.AddProduct();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     InventoryMenuDisplay();
                     break;
                 case InventoryMenu.Remove_Item:
                     // Remove item logic here
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     inventoryManager.RemoveFrominventory();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     InventoryMenuDisplay();
                     break;
                 case InventoryMenu.View_Inventory:
                     // View inventory logic here
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     inventoryManager.ViewProduct();
                     Console.WriteLine("Press any key to return to the Inventory menu...");
                     Console.ReadKey();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     InventoryMenuDisplay();
                     break;
                 case InventoryMenu.Low_Stock_Inventory:
                     // Low stock inventory logic here
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     inventoryManager.ViewLowStock();
                     Console.WriteLine("Press any key to return to the Inventory menu...");
                     Console.ReadKey();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     InventoryMenuDisplay();
                     break;
                 case InventoryMenu.Return:
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     MainMenuDisplay();
                     break;
             }
@@ -208,23 +218,24 @@ namespace PRG281_Project
                 case StatsMenu.Cash_Chart:
                     // Display cash chart logic here
                     CashStatistics cashStatistics = new CashStatistics();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     cashStatistics.displayCashCharts();
                     Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                     Console.ReadKey();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     StatisticsMenuDisplay();
                     break;
                 case StatsMenu.Inventory_Data:
                     // Display inventory data logic here
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     inventoryManager.ViewProduct();
                     Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                     Console.ReadKey();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     StatisticsMenuDisplay();
                     break;
                 case StatsMenu.Return:
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     MainMenuDisplay();
                     break;
             }
@@ -276,46 +287,46 @@ namespace PRG281_Project
             {
                 case CashMenu.Add_Income:
                     // Income cash logic here
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     Console.Clear();
                     addCash.AddIncome();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     CashFlowManagerMenuDisplay();
                     break;
 
                 case CashMenu.Add_Expenses:
                     // Expenses cash logic here
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     Console.Clear();
                     subtractCash.AddExpenses();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     CashFlowManagerMenuDisplay();
                     break;
 
                 case CashMenu.Calculate_Cash:
                     // Calculate cash logic here
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     Console.Clear();
                     calculateCash.CalculateTotalCash();
                     Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                     Console.ReadKey();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     CashFlowManagerMenuDisplay();
                     break;
 
                 case CashMenu.Display_Cash_Charts:
                     // Display cash charts logic here
                     CashStatistics cashStatistics = new CashStatistics();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     cashStatistics.displayCashCharts();
                     Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                     Console.ReadKey();
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     CashFlowManagerMenuDisplay();
                     break;
 
                 case CashMenu.Return:
-                    Animation.LoadingBar();
+                    RunLoadingBar();                //CALLS CUSTOM THREADING
                     MainMenuDisplay();
                     break;
             }
