@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text;
 using PRG281_Project;
+using Project281.InventoryManager;
 
 //Rivan Maritz 601530
 //Theart Jooste 601288
+//Tetelop Phahladira 601950
 
 //enums for the main menu, inventory menu, cash flow manager menu, and statistics menu
 enum MainMenu
@@ -25,7 +27,6 @@ enum InventoryMenu
     Remove_Item,
     View_Inventory,
     Low_Stock_Inventory,
-    Inventory_Statistics,
     Return
 }
 
@@ -45,48 +46,7 @@ enum StatsMenu
     Return
 }
 
-public class Data
-{
-    // Sample cash flow data
-    private int[] Cashflow = [45, 20, 35, 26, 51, 61, 23, 56, 45];
-    // Method to get the cash flow data
-    public int[] GetCashFlowData()
-    {
-        return Cashflow;
-    }
-    // Sample inventory data
-    private string[] Inventory = ["Item1", "Item2", "Item3", "Item4", "Item5"];
-    private int[] InventoryQuantities = [10, 5, 15, 3, 8];
-    private double[] InventoryPrices = [12.99, 8.49, 15.00, 5.99, 10.50];
-    private DateTime[] InventoryAddDates =
-    {
-        new DateTime(2024, 12, 31),
-        new DateTime(2025, 1, 15),
-        new DateTime(2024, 11, 30),
-        new DateTime(2025, 2, 28),
-        new DateTime(2024, 10, 20)
-    };
-    // Method to get the inventory items, quantities, prices, and add dates
-    public string[] GetInventoryItems()
-    {
-        return Inventory;
-    }
-    public int[] GetInventoryQuantities()
-    {
-        return InventoryQuantities;
-    }
-    public double[] GetInventoryPrices()
-    {
-        return InventoryPrices;
-    }
-
-    public DateTime[] GetInventoryAddDates()
-    {
-        return InventoryAddDates;
-    }
-}
-
-public class Menu : Data
+public class Menu 
 {
     private AddCash addCash = new AddCash(); // Persistent instance
     private SubtractCash subtractCash = new SubtractCash(); // Persistent instance
@@ -174,6 +134,7 @@ public class Menu : Data
     //inventory menu display
     public void InventoryMenuDisplay()
     {
+        InventoryManagerClass inventoryManager = new InventoryManagerClass();
         var options = Enum.GetValues<InventoryMenu>();
         int selectedIndex = 0;
         ConsoleKey key;
@@ -216,19 +177,27 @@ public class Menu : Data
         {
             case InventoryMenu.Add_Item:
                 // Add item logic here
+                inventoryManager.AddProduct();
+                Animation.LoadingBar();
+                InventoryMenuDisplay();
                 break;
             case InventoryMenu.Remove_Item:
                 // Remove item logic here
+                inventoryManager.RemoveFrominventory();
+                Animation.LoadingBar();
+                InventoryMenuDisplay();
                 break;
             case InventoryMenu.View_Inventory:
                 // View inventory logic here
+                inventoryManager.ViewProduct();
+                Console.WriteLine("Press any key to return to the Inventory menu...");
+                Console.ReadKey();
+                Animation.LoadingBar();
+                InventoryMenuDisplay();
                 break;
             case InventoryMenu.Low_Stock_Inventory:
                 // Low stock inventory logic here
-                break;
-            case InventoryMenu.Inventory_Statistics:
-                // Inventory statistics logic here
-                DisplayStats.CreateInventoryTable();
+                inventoryManager.ViewLowStock();
                 Console.WriteLine("Press any key to return to the Inventory menu...");
                 Console.ReadKey();
                 Animation.LoadingBar();
@@ -244,6 +213,7 @@ public class Menu : Data
     //Statistics Menu Display
     public void StatisticsMenuDisplay()
     {
+        InventoryManagerClass inventoryManager = new InventoryManagerClass();
         var options = Enum.GetValues<StatsMenu>();
         int selectedIndex = 0;
         ConsoleKey key;
@@ -296,8 +266,8 @@ public class Menu : Data
                 break;
             case StatsMenu.Inventory_Data:
                 // Display inventory data logic here
-                DisplayStats.CreateInventoryTable();
-                Console.WriteLine("Press any key to return to the Statistics menu...");
+                inventoryManager.ViewProduct();
+                Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();
                 Animation.LoadingBar();
                 StatisticsMenuDisplay();
@@ -356,6 +326,7 @@ public class Menu : Data
             case CashMenu.Add_Income:
                 // Income cash logic here
                 Animation.LoadingBar();
+                Console.Clear();
                 addCash.AddIncome();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
@@ -364,6 +335,7 @@ public class Menu : Data
             case CashMenu.Add_Expenses:
                 // Expenses cash logic here
                 Animation.LoadingBar();
+                Console.Clear();
                 subtractCash.AddExpenses();
                 Animation.LoadingBar();
                 CashFlowManagerMenuDisplay();
@@ -372,6 +344,7 @@ public class Menu : Data
             case CashMenu.Calculate_Cash:
                 // Calculate cash logic here
                 Animation.LoadingBar();
+                Console.Clear();
                 calculateCash.CalculateTotalCash();
                 Console.WriteLine("Press any key to return to the Cash Flow Manager menu...");
                 Console.ReadKey();
@@ -395,62 +368,6 @@ public class Menu : Data
                 MainMenuDisplay();
                 break;
         }
-    }
-}
-
-public class  DisplayStats
-{
-    // Method to draw a line graph based on the provided data
-    public static void DrawLineGraph(int[] data)
-    {
-        int maxHeight = 10;
-        int maxData = 0;
-        foreach (int d in data)
-            if (d > maxData) maxData = d;
-
-        double scale = maxHeight / (double)maxData;
-
-        // For each row from top to bottom
-        for (int row = maxHeight; row >= 1; row--)
-        {
-            foreach (var point in data)
-            {
-                int pointHeight = (int)(point * scale);
-                if (pointHeight == row)
-                    Console.Write("* ");
-                if (pointHeight < row)
-                    Console.Write("  ");
-                if (pointHeight > row)
-                    Console.Write("| ");
-            }
-            Console.WriteLine();
-        }
-
-        // Draw X-axis line
-        for (int i = 0; i < data.Length; i++)
-            Console.Write("--");
-        Console.WriteLine();
-
-        // Draw indices or labels below x-axis
-        for (int i = 0; i < data.Length; i++)
-            Console.Write($"{i+1} ");
-        Console.WriteLine();
-    }
-    // Method to create an inventory table with items, quantities, prices, and add dates
-    public static void CreateInventoryTable()
-    {
-        Console.Clear();
-        string[] items = new Data().GetInventoryItems();
-        int[] quantities = new Data().GetInventoryQuantities();
-        double[] prices = new Data().GetInventoryPrices();
-        DateTime[] addDates = new Data().GetInventoryAddDates();
-        Console.WriteLine("Item\tQuantity\tPrice\tAdd Date");
-        Console.WriteLine("-----------------------------------------");
-        for (int i = 0; i < items.Length; i++)
-        {
-            Console.WriteLine($"{items[i]}\t{quantities[i]}\t\t{prices[i]:C}\t{addDates[i]:d}");
-        }
-        Console.WriteLine("-----------------------------------------");
     }
 }
 
