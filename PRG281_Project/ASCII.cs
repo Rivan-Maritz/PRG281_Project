@@ -168,7 +168,7 @@ ___________.__                .__                 _________               .__
             int verticalPadding = (windowHeight - lines.Length) / 2;
 
             Console.CursorTop = verticalPadding;
-
+            
             foreach (var line in lines)
             {
                 int horizontalPadding = (windowWidth - line.Length) / 2;
@@ -183,15 +183,22 @@ ___________.__                .__                 _________               .__
 
         public void Write()
         {
-            Console.WriteLine("    ███████ ██       ██████  ██     ██ ██ ███    ██  ██████       ██████  █████  ███████ ██   ██ \r\n" +
-                              "   ██      ██      ██    ██ ██     ██ ██ ████   ██ ██           ██      ██   ██ ██      ██   ██ \r\n" +
-                              "  █████   ██      ██    ██ ██  █  ██ ██ ██ ██  ██ ██   ███     ██      ███████ ███████ ███████ \r\n" +
-                              " ██      ██      ██    ██ ██ ███ ██ ██ ██  ██ ██ ██    ██     ██      ██   ██      ██ ██   ██ \r\n" +
-                              "██      ███████  ██████   ███ ███  ██ ██   ████  ██████       ██████ ██   ██ ███████ ██   ██ \r\n\r\n" +
-
-                              "████████████████████████████████████████████████████████████████████████████████████████████████ \r\n\r\n" +
-                              "         Use the arrow keys to navigate the menu and press Enter to select an option.\r\n"
-                          );
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("    ███████ ██       ██████  ██     ██ ██ ███    ██  ██████       ██████  █████  ███████ ██   ██ ");
+            Console.WriteLine("   ██      ██      ██    ██ ██     ██ ██ ████   ██ ██           ██      ██   ██ ██      ██   ██ ");
+            Console.WriteLine("  █████   ██      ██    ██ ██  █  ██ ██ ██ ██  ██ ██   ███     ██      ███████ ███████ ███████ ");
+            Console.WriteLine(" ██      ██      ██    ██ ██ ███ ██ ██ ██  ██ ██ ██    ██     ██      ██   ██      ██ ██   ██ ");
+            Console.WriteLine("██      ███████  ██████   ███ ███  ██ ██   ████  ██████       ██████ ██   ██ ███████ ██   ██ ");
+            Console.ResetColor();
+            Console.WriteLine("");
+            Console.WriteLine("████████████████████████████████████████████████████████████████████████████████████████████████");
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("         Use the arrow keys to navigate the menu and press Enter to select an option.");
+            Console.ResetColor();
+            Console.WriteLine("");
+            Console.WriteLine("████████████████████████████████████████████████████████████████████████████████████████████████");
+            Console.WriteLine("");
         }
     }
 }

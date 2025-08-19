@@ -55,6 +55,7 @@ public class Visual
         loginDisplay.DisplayOpening();
     }
 }
+
 internal class Program
 {
     // Main method to start the application

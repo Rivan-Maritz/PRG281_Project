@@ -132,7 +132,6 @@ namespace PRG281_Project
                 {
                     finalExpense = expenses;
                 }
-                else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid VAT option. Please enter Y or N.");
@@ -224,7 +223,9 @@ namespace PRG281_Project
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("No income data available.");
+                Console.ResetColor();
             }
 
             if (hasExpense)
@@ -234,10 +235,14 @@ namespace PRG281_Project
                 {
                     DrawBar(arrExpense[i], maxValue, ConsoleColor.Red, i);
                 }
+                Console.WriteLine(" ");
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("\n No expense data available.");
+                Console.ResetColor();
+                Console.WriteLine(" ");
             }
         }
 
