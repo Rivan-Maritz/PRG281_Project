@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using PRG281_Project;
 
 namespace Project281.InventoryManager
 {
@@ -27,6 +28,7 @@ namespace Project281.InventoryManager
         public int mostStockedItem;
         public int lowStockAlert;
         static List<Inventory> inventory = new List<Inventory>();
+        ASCII Ascii = new ASCII();
 
         //object to access the inventory class
 
@@ -40,6 +42,8 @@ namespace Project281.InventoryManager
             while(isValid)
             {
                 Console.Clear();
+                Ascii.InventoryAddModuleDisplay();
+                Console.WriteLine("");
                 Console.WriteLine("Please enter the bar code of the product");
                 string ProductID = Console.ReadLine();
                 Console.WriteLine("");
@@ -90,7 +94,10 @@ namespace Project281.InventoryManager
                 while (true)
                 {
                     Console.WriteLine("");
-                    Console.WriteLine("Do want to add another product: [Y/N]");
+                    Console.Write("Would you like to add another Product? ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("[Y/N]");
+                    Console.ResetColor();
                     confirmRenter = Console.ReadLine().ToLower();
 
                     if (confirmRenter == "y")
@@ -119,6 +126,8 @@ namespace Project281.InventoryManager
         //method to remove a product by user inputting the product ID
         public void RemoveFrominventory()
         {
+            Ascii.InventoryRemoveModuleDisplay();
+            Console.WriteLine("");
             Console.WriteLine("Please enter the product Product Barcode");
             //specify a new variable for the user input that this new one might be validated with the existing product IDs
             string ProductID = Console.ReadLine();
@@ -153,6 +162,8 @@ namespace Project281.InventoryManager
         //method to check reorder levels 
         public void ViewLowStock()
         {
+            Ascii.InventoryLowStockModuleDisplay();
+            Console.WriteLine("");
             // Check if there are any items in the inventory
             Console.Write("Enter stock threshold to define low stock: ");
             if (int.TryParse(Console.ReadLine(), out int threshold))
@@ -182,6 +193,9 @@ namespace Project281.InventoryManager
         //method to view all products in the inventory
         public void ViewProduct()
         {
+            Ascii.InventoryViewModuleDisplay();
+            // Check if there are any items in the inventory
+            Console.WriteLine("");
             if (inventory.Count == 0)
             {
                 Console.WriteLine("Inventory is empty.");
