@@ -16,7 +16,8 @@ namespace PRG281_Project
 
         public static void RunLoadingBar()
         {
-            Thread loadingThread = new Thread(() => Animation.LoadingBar());  //CUSTOM THREADING
+            Animation animation = new Animation(); // Create an instance of Animation
+            Thread loadingThread = new Thread(() => animation.LoadingBar());  //CUSTOM THREADING
             loadingThread.Start();                                            //STARTS CUSTOM THREADING
             loadingThread.Join();                                             //WAITS FOR THE LOADING BAR TO FINISH
         }

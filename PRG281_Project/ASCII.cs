@@ -6,7 +6,21 @@ using System.Threading.Tasks;
 
 namespace PRG281_Project
 {
-    class ASCII
+    interface IASCII
+    {
+        void IncomeModuleDisplay();
+        void ExpenseModuleDisplay();
+        void CashModuleDisplay();
+        void CashStatsModuleDisplay();
+        void InventoryAddModuleDisplay();
+        void InventoryLowStockModuleDisplay();
+        void InventoryViewModuleDisplay();
+        void InventoryRemoveModuleDisplay();
+        void CashFlowDisplay();
+        void Write();
+    }
+
+    class ASCII : IASCII
     {
         public void IncomeModuleDisplay()
         {
