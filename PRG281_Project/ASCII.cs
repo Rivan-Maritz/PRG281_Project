@@ -146,5 +146,52 @@ namespace PRG281_Project
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------");
         }
 
+        public void CashFlowDisplay()
+        {
+            Console.WriteLine("");
+            string Title = @"
+___________.__                .__                 _________               .__     
+\_   _____/|  |   ______  _  _|__| ____    ____   \_   ___ \_____    _____|  |__  
+ |    __)  |  |  /  _ \ \/ \/ /  |/    \  / ___\  /    \  \/\__  \  /  ___/  |  \ 
+ |     \   |  |_(  <_> )     /|  |   |  \/ /_/  > \     \____/ __ \_\___ \|   Y  \
+ \___  /   |____/\____/ \/\_/ |__|___|  /\___  /   \______  (____  /____  >___|  /
+     \/                               \//_____/           \/     \/     \/     \/ 
+                       ";
+
+
+            //determining the middle point of the console window
+            var lines = Title.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            int longestLength = lines.Max(line => line.Length);
+            int windowWidth = Console.WindowWidth;
+            int windowHeight = Console.WindowHeight;
+
+            int verticalPadding = (windowHeight - lines.Length) / 2;
+
+            Console.CursorTop = verticalPadding;
+
+            foreach (var line in lines)
+            {
+                int horizontalPadding = (windowWidth - line.Length) / 2;
+
+                Console.SetCursorPosition(horizontalPadding, Console.CursorTop);
+
+                Console.WriteLine(line);
+                Thread.Sleep(50); // Adding a slight delay for effect
+            }
+            Thread.Sleep(1500); // Pause before clearing the console
+        }
+
+        public void Write()
+        {
+            Console.WriteLine("    ███████ ██       ██████  ██     ██ ██ ███    ██  ██████       ██████  █████  ███████ ██   ██ \r\n" +
+                              "   ██      ██      ██    ██ ██     ██ ██ ████   ██ ██           ██      ██   ██ ██      ██   ██ \r\n" +
+                              "  █████   ██      ██    ██ ██  █  ██ ██ ██ ██  ██ ██   ███     ██      ███████ ███████ ███████ \r\n" +
+                              " ██      ██      ██    ██ ██ ███ ██ ██ ██  ██ ██ ██    ██     ██      ██   ██      ██ ██   ██ \r\n" +
+                              "██      ███████  ██████   ███ ███  ██ ██   ████  ██████       ██████ ██   ██ ███████ ██   ██ \r\n\r\n" +
+
+                              "████████████████████████████████████████████████████████████████████████████████████████████████ \r\n\r\n" +
+                              "         Use the arrow keys to navigate the menu and press Enter to select an option.\r\n"
+                          );
+        }
     }
 }
