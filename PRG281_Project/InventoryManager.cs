@@ -18,10 +18,17 @@ namespace Project281.InventoryManager
         public double price { get; set; }
         public int quantity { get; set; }
 
-
     }
 
-    public class InventoryManagerClass
+    public abstract class InventoryManagerBase
+    {
+        public abstract void AddProduct();
+        public abstract void RemoveFrominventory();
+        public abstract void ViewProduct();
+        public abstract void ViewLowStock();
+    }
+
+    public class InventoryManagerClass:InventoryManagerBase
 
     {
         public int totalItem;
@@ -33,7 +40,7 @@ namespace Project281.InventoryManager
         //object to access the inventory class
 
         //method to add a product to the inventory
-        public void AddProduct()
+        public override void AddProduct()
         {
             bool isValid = true;    
             //loop to allow user to load more products to inventory
@@ -124,7 +131,7 @@ namespace Project281.InventoryManager
         }
 
         //method to remove a product by user inputting the product ID
-        public void RemoveFrominventory()
+        public override void RemoveFrominventory()
         {
             Ascii.InventoryRemoveModuleDisplay();
             Console.WriteLine("");
@@ -160,7 +167,7 @@ namespace Project281.InventoryManager
         }
 
         //method to check reorder levels 
-        public void ViewLowStock()
+        public override void ViewLowStock()
         {
             Ascii.InventoryLowStockModuleDisplay();
             Console.WriteLine("");
@@ -191,7 +198,7 @@ namespace Project281.InventoryManager
         }
 
         //method to view all products in the inventory
-        public void ViewProduct()
+        public override void ViewProduct()
         {
             Ascii.InventoryViewModuleDisplay();
             // Check if there are any items in the inventory
