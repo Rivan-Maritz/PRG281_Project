@@ -132,6 +132,7 @@ namespace PRG281_Project
                 {
                     finalExpense = expenses;
                 }
+                else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid VAT option. Please enter Y or N.");

@@ -27,6 +27,7 @@ namespace PRG281_Project
             {
                 Console.Clear();
                 ascii.Write();
+                Console.WriteLine("");
                 for (int i = 0; i < options.Length; i++)
                 {
                     if (i == selectedIndex)
