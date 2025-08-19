@@ -11,6 +11,9 @@ namespace PRG281_Project
     {
         const string storeID = "MTIzNA=="; // PS: SUPER HIDDEN, the password is "1234"
 
+        public event EventHandler AccessGranted; //EVENT for acces that has been granted to the user  //EVENTTT HERE <------
+        public event EventHandler AccessDenied; //EVENT for access that has been denied to the user   //EVENTTT HERE <------
+
         public void GetInformation()
         {
             Console.WriteLine("--------------------------------------------------------------------------------------------------------------");
@@ -52,18 +55,16 @@ namespace PRG281_Project
 
                 if (TestPassword(encoded))
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Access Granted!");
-                    Console.ResetColor();
-                    Console.WriteLine("Please press any key to return...");
-                    Console.ReadKey();
+                    AccessGranted?.Invoke(this, EventArgs.Empty); //Raise event for access granted
                     return;
                 }
                 else
                 {
+                    AccessDenied?.Invoke(this, EventArgs.Empty); // Raise event fr access denied
                     attempts++;
                     Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine($"                                        Incorrect password. Attempts remaining: {maxAttempts - attempts}");
+                    Console.WriteLine($" {maxAttempts - attempts}");
+                    Console.WriteLine(" ");
                     Console.ResetColor();
                 }
             }

@@ -31,8 +31,12 @@ namespace PRG281_Project
             Console.Clear();
 
             Security security = new Security(); // Instantiate the Security class to handle login validation
-            security.GetInformation(); // Call the method to get user input for login validation
 
+            //Subscribe to events both Access Grated and denied
+            security.AccessGranted += OnAccessGranted;
+            security.AccessDenied += OnAccessDenied;
+
+            security.GetInformation(); // Call the method to get user input for login validation
 
             Thread loadingThread = new Thread(Animation.LoadingBar);                //CUSTOM THREADING
             loadingThread.Start();      // Starting the thread loadingThread
@@ -46,6 +50,24 @@ namespace PRG281_Project
             displaythread.Join();       // Wait for the display thread to finish
 
 
+
+            //These below are the event methods that will be called when the events are raised
+            static void OnAccessGranted(object sender, EventArgs e)                 //EVENT METHODS   <-------------------------
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("                                           Access granted! Welcome to the system.");
+                Console.WriteLine(" ");
+                Console.ResetColor();
+                Console.WriteLine("Please wait...");
+                Thread.Sleep(3000);
+            }
+
+            static void OnAccessDenied(object sender, EventArgs e)                  //EVENT METHODS   <-------------------------
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("                              Access denied. Please try again later. Total Attempts Left");
+                Console.ResetColor();
+            }
         }
     }
 }
