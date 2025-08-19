@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PRG281_Project
 {
-
-    interface IAnimation
+    //This whole class just uses the Animation class to display the opening sequence of the program
+    interface IAnimation                                                        //AYYYYY look an interface 😉😉
     {
-        void DisplayCenteredText(string text, int row);
+        void DisplayCenteredText(string text, int row);                         
         void AnimateCenteredTyping(string text, int row, int promptLength);
         void LoadingBar();
     }

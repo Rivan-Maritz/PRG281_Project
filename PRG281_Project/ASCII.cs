@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG281_Project
 {
-    interface IASCII
+    interface IASCII                //INTERFACEE YAYYYY
     {
         void IncomeModuleDisplay();
         void ExpenseModuleDisplay();

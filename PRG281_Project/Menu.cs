@@ -23,6 +23,7 @@ namespace PRG281_Project
         }
 
         //Main menu display
+        //Mostly everything here are enum menus nothing special
         public void MainMenuDisplay()
         {
             var options = Enum.GetValues<MainMenu>();

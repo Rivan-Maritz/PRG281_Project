@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 //Theart Jooste 601288
 //Tetelop Phahladira 601950
 
-//enums for the main menu, inventory menu, cash flow manager menu, and statistics menu
+//enums for the main menu
+//Consisting of Inventory, Cash Flow Manager, Statistics, and Exit
 enum MainMenu
 {
     Inventory,
@@ -21,6 +22,8 @@ enum MainMenu
     Exit
 }
 
+//enums for the Inventory menu
+//Consisting of Add Item, Remove Item, View Inventory, Low Stock Inventory, and Return
 enum InventoryMenu
 {
     Add_Item,
@@ -30,6 +33,8 @@ enum InventoryMenu
     Return
 }
 
+//enums for the Cash Flow Manager menu
+//Consisting of Add Income, Add Expenses, Calculate Cash, Display Cash Charts, and Return
 enum CashMenu
 {
     Add_Income,
@@ -39,6 +44,8 @@ enum CashMenu
     Return
 }
 
+//enums for the Statistics menu
+//Consisting of Cash Chart, Inventory Data, and Return
 enum StatsMenu
 {
     Cash_Chart,
@@ -46,25 +53,25 @@ enum StatsMenu
     Return
 }
 
-public class Visual
+public class Visual     //public since we want to access this class from the LoginDisplay class
 {
     //Opening sequence display for the flowing cash program
     public void DisplayOpening()
     {
-        LoginDisplay loginDisplay = new LoginDisplay();
+        LoginDisplay loginDisplay = new LoginDisplay();     //creating an instance of the LoginDisplay class to handle the login display
         loginDisplay.DisplayOpening();
     }
 }
 
-internal class Program
+internal class Program  // Main class to run the application
 {
     // Main method to start the application
-    private static void Main(string[] args)
+    private static void Main(string[] args) 
     {
         Visual style = new Visual();
-        Menu menu = new Menu();
+        Menu menu = new Menu();     //Just creating an instance of the Menu class to handle the main menu display
 
-        style.DisplayOpening();
+        style.DisplayOpening();     //Calling some methods to display the opening sequence of the application
         Console.Clear();
         menu.MainMenuDisplay();
     }

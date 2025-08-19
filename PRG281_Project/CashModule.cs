@@ -11,10 +11,10 @@ namespace PRG281_Project
         ASCII Ascii = new ASCII();
 
         private static double amount;
-        protected internal static double[] arrIncome = new double[500];
-        protected internal static int IncomeCounter = 0;
-        protected internal static double[] arrExpense = new double[500];
-        protected internal static int ExpenseCounter = 0;
+        protected internal static double[] arrIncome = new double[500];     //Protected since it only gets used in these inheriting classes
+        protected internal static int IncomeCounter = 0;                    //Protected since it only gets used in these inheriting classes
+        protected internal static double[] arrExpense = new double[500];    //Protected since it only gets used in these inheriting classes
+        protected internal static int ExpenseCounter = 0;                   //Protected since it only gets used in these inheriting classes    
 
         public static double Amount
         {
@@ -34,7 +34,7 @@ namespace PRG281_Project
         }
     }
 
-    class AddCash : CashMain
+    class AddCash : CashMain    //inherits from CashMain class
     {
         public void AddIncome()
         {
@@ -87,7 +87,7 @@ namespace PRG281_Project
         }
     }
 
-    class SubtractCash : CashMain
+    class SubtractCash : CashMain    //inherits from CashMain class
     {
         public void AddExpenses()
         {
@@ -171,7 +171,7 @@ namespace PRG281_Project
         }
     }
 
-    class CalculateCash : CashMain
+    class CalculateCash : CashMain   //inherits from CashMain class
     {
         public void CalculateTotalCash()
         {
@@ -192,7 +192,7 @@ namespace PRG281_Project
         }
     }
 
-    class CashStatistics : CashMain
+    class CashStatistics : CashMain  //inherits from CashMain class
     {
         public void displayCashCharts()
         {
@@ -248,7 +248,7 @@ namespace PRG281_Project
         }
 
 
-        private static void DrawBar(double value, double maxValue, ConsoleColor color, int index)
+        private static void DrawBar(double value, double maxValue, ConsoleColor color, int index)   //This just draws the bar for the chart
         {
             int barWidth = 50;
             int scaledLength = (int)((value / maxValue) * barWidth); //convert to int
