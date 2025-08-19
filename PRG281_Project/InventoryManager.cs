@@ -20,7 +20,7 @@ namespace Project281.InventoryManager
 
     }
 
-    public abstract class InventoryManagerBase
+    public abstract class InventoryManagerBase          //DECLAREATION OF ABSTRACT CLASSES
     {
         public abstract void AddProduct();
         public abstract void RemoveFrominventory();
@@ -40,7 +40,7 @@ namespace Project281.InventoryManager
         //object to access the inventory class
 
         //method to add a product to the inventory
-        public override void AddProduct()
+        public override void AddProduct()           //DYNAMIC POLYMORPHISM
         {
             bool isValid = true;    
             //loop to allow user to load more products to inventory
@@ -131,7 +131,7 @@ namespace Project281.InventoryManager
         }
 
         //method to remove a product by user inputting the product ID
-        public override void RemoveFrominventory()
+        public override void RemoveFrominventory()      //DYNAMIC POLYMORPHISM
         {
             Ascii.InventoryRemoveModuleDisplay();
             Console.WriteLine("");
@@ -167,7 +167,7 @@ namespace Project281.InventoryManager
         }
 
         //method to check reorder levels 
-        public override void ViewLowStock()
+        public override void ViewLowStock()     //DYNAMIC POLYMORPHISM
         {
             Ascii.InventoryLowStockModuleDisplay();
             Console.WriteLine("");
@@ -198,7 +198,7 @@ namespace Project281.InventoryManager
         }
 
         //method to view all products in the inventory
-        public override void ViewProduct()
+        public override void ViewProduct()      //DYNAMIC POLYMORPHISM
         {
             Ascii.InventoryViewModuleDisplay();
             // Check if there are any items in the inventory

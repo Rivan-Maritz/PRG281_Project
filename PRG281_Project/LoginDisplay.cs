@@ -30,6 +30,10 @@ namespace PRG281_Project
 
             Console.Clear();
 
+            Security security = new Security(); // Instantiate the Security class to handle login validation
+            security.GetInformation(); // Call the method to get user input for login validation
+
+
             Thread loadingThread = new Thread(Animation.LoadingBar);                //CUSTOM THREADING
             loadingThread.Start();      // Starting the thread loadingThread
             loadingThread.Join();       // Wait for the loading bar to finish
