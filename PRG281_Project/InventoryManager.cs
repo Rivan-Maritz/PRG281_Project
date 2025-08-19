@@ -79,20 +79,50 @@ namespace Project281.InventoryManager
                     string type = Console.ReadLine();
                     Console.WriteLine("");
                     Console.WriteLine("What is the price of the product");
-                    double price;
+                    double price = 0;
                     //exception handling to make sure user input is in the requested format
-                    while (!double.TryParse(Console.ReadLine(), out price))
+                    bool validInput = false;
+
+                    while (!validInput)
                     {
-                        Console.WriteLine("❌ ERROR: Input is invalid. Please try again.");
+                        try
+                        {
+                            string input = Console.ReadLine();
+                            if (!double.TryParse(input, out price))
+                            {
+                                throw new FormatException("Input is invalid. Please enter a numeric value.");
+                            }
+                            price = double.Parse(input);
+                            validInput = true; // exit loop if input is valid
+                        }
+                        catch (FormatException ex)
+                        {
+                            Console.WriteLine($"❌ ERROR: {ex.Message}");
+                        }
                     }
                     Console.WriteLine("");
                     Console.WriteLine("How much of this product do you want to add to inventory?");
-                    int quantity;
+                    int quantity = 0;
+                    validInput = false;
                     //loop to ask user to enter a valid text. loop stops executing when the text is valid
-                    while (!int.TryParse(Console.ReadLine(), out quantity))
+                    while (!validInput)
                     {
-                        Console.WriteLine("❌ ERROR: Input is invalid. Please try again.");
+                        try
+                        {
+                            string input = Console.ReadLine();
+                            if (!int.TryParse(input, out quantity))
+                            {
+                                throw new FormatException("Input is invalid. Please enter a numeric value.");
+                            }
+                            quantity = int.Parse(input);
+                            validInput = true;  // exit loop if input is valid
+                        }
+                        catch (FormatException ex)
+                        {
+                            Console.WriteLine($"❌ ERROR: {ex.Message}");
+                        }
                     }
+                    //create a new inventory object and add it to the inventory list
                     inventory.Add(new Inventory { name = name, quantity = quantity, ProductID = ProductID, type = type, price = price });
                     //confirmation message to show that product has been added to the inventory
                     Console.WriteLine($"{name} with productID; {ProductID} has been added");
@@ -145,18 +175,31 @@ namespace Project281.InventoryManager
                 Console.WriteLine("How much of this product do you want to remove from inventory?");
                 int quantity;
                 //loop to ask user to enter a valid text. loop stops executing when the text is valid
-                while (!int.TryParse(Console.ReadLine(), out quantity))
+                try
                 {
-                    Console.WriteLine("❌ ERROR: Input is invalid. Please try again.");
-                }
-                if (quantity > item.quantity)
-                {
-                    Console.WriteLine("❌ ERROR: Quantity to remove exceeds available stock.");
-                }
-                else
-                {
+                    Console.WriteLine("Enter quantity to remove:");
+                    string input = Console.ReadLine();
+
+                    if (!int.TryParse(input, out quantity))
+                    {
+                        throw new FormatException("Input is invalid. Please enter a numeric value.");
+                    }
+
+                    if (quantity > item.quantity)
+                    {
+                        throw new InvalidOperationException("Quantity to remove exceeds available stock.");
+                    }
+
                     item.quantity -= quantity;
                     Console.WriteLine($"{quantity} of {item.name} has been removed from inventory.");
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine($"❌ ERROR: {ex.Message}");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine($"❌ ERROR: {ex.Message}");
                 }
             }
             else
@@ -173,8 +216,14 @@ namespace Project281.InventoryManager
             Console.WriteLine("");
             // Check if there are any items in the inventory
             Console.Write("Enter stock threshold to define low stock: ");
-            if (int.TryParse(Console.ReadLine(), out int threshold))
+            try
             {
+                string input = Console.ReadLine();
+                if (!int.TryParse(input, out int threshold))
+                {
+                    throw new FormatException("Invalid threshold value. Please enter a valid integer.");
+                }
+
                 var lowStockItems = inventory.Where(i => i.quantity < threshold).ToList();
 
                 if (lowStockItems.Count == 0)
@@ -182,6 +231,7 @@ namespace Project281.InventoryManager
                     Console.WriteLine("No items are low on stock.");
                     return;
                 }
+
                 // Display low stock items
                 Console.WriteLine("\nLow Stock Items:");
                 foreach (var item in lowStockItems)
@@ -189,12 +239,11 @@ namespace Project281.InventoryManager
                     Console.WriteLine($"- {item.ProductID} {item.name}: {item.quantity}");
                 }
             }
-            else
+            catch (FormatException ex)
             {
-                // If the input is not a valid integer, display an error message
-                Console.WriteLine("Invalid threshold value.");
+                Console.WriteLine($"❌ ERROR: {ex.Message}");
             }
-        
+
         }
 
         //method to view all products in the inventory

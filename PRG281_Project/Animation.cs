@@ -57,6 +57,7 @@ namespace PRG281_Project
 
                 Thread.Sleep(10);
             }
+            Console.Clear();
         }
     }
 }
