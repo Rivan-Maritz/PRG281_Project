@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PRG281_Project
-{
+{ 
+
     class LoginDisplay
     {
         public void DisplayOpening()
         {
+            Animation animation = new Animation();
+
             //text for the password and username animation in the center of the console window
             string usernamePrompt = "Enter username:";
             string passwordPrompt = "Enter password:";
@@ -20,13 +23,13 @@ namespace PRG281_Project
             int startRow = (Console.WindowHeight / 2) - (totalLines / 2);
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Animation.DisplayCenteredText(usernamePrompt, startRow);
-            Animation.DisplayCenteredText(passwordPrompt, startRow + 1);
+            animation.DisplayCenteredText(usernamePrompt, startRow);
+            animation.DisplayCenteredText(passwordPrompt, startRow + 1);
             Console.ResetColor();
 
-            Animation.AnimateCenteredTyping(username, startRow, usernamePrompt.Length);
+            animation.AnimateCenteredTyping(username, startRow, usernamePrompt.Length);
 
-            Animation.AnimateCenteredTyping(password, startRow + 1, passwordPrompt.Length);
+            animation.AnimateCenteredTyping(password, startRow + 1, passwordPrompt.Length);
 
             Console.Clear();
 
@@ -34,7 +37,7 @@ namespace PRG281_Project
             security.GetInformation(); // Call the method to get user input for login validation
 
 
-            Thread loadingThread = new Thread(Animation.LoadingBar);                //CUSTOM THREADING
+            Thread loadingThread = new Thread(animation.LoadingBar);                //CUSTOM THREADING
             loadingThread.Start();      // Starting the thread loadingThread
             loadingThread.Join();       // Wait for the loading bar to finish
 
