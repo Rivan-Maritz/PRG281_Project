@@ -2,11 +2,6 @@
 
 > A console-based C# business management application featuring inventory control, cash management, user authentication, and security - built with modular, single-responsibility design.
 
-## 📸 Preview
-
-<!-- Take a screenshot of your app running in the console and add it here -->
-![Preview](screenshot.png)
-
 ## 📋 About
 
 This project was developed as part of the **PRG281 module** at Belgium Campus ITversity. It is a purely console-driven application that simulates a real-world business management system, covering core areas like stock inventory, cash handling, and secure user login.
